@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    @apply bg-gray-200;
+}
+
+.container {
+    @apply max-w-5xl mx-auto p-4;
+}
+
+.link {
+    @apply hover:bg-slate-300 px-4 py-2 rounded-sm font-semibold capitalize;
+}
+
+.input {
+    @apply p-2 rounded-md outline-none border border-gray-400;
+}
+
+.btn {
+    @apply py-2 px-4 text-white font-semibold rounded-md flex justify-center items-center space-x-1;
+}
+.btn-primary {
+    @apply bg-green-500 hover:bg-green-600 active:bg-green-700
+}
+.btn-dark {
+    @apply bg-gray-950 hover:bg-gray-900 active:bg-gray-800
+}
+.btn-danger {
+    @apply bg-red-500 hover:bg-red-600 active:bg-red-700
+}
+
+.card {
+    @apply p-4 rounded-sm bg-gray-100;
+}
+.card-primary {
+    @apply p-4 rounded-sm bg-green-100;
+}
+
+.divider {
+    @apply h-[2px] bg-gray-300 rounded-md my-2
+}
+
+.text-clamp {
+   display: -webkit-box;
+   -webkit-line-clamp: 3;
+   -webkit-box-orient: vertical;
+   overflow: hidden;
+}
