@@ -1,15 +1,15 @@
 <template>
     <div class="hero">
-        <div class="flex justify-center items-center h-32">
-            <form action="" class="flex items-end space-x-2 mb-10">
+        <div class="flex justify-center items-center min-h-32">
+            <form action="" class="w-full sm:w-auto flex flex-col sm:flex-row sm:items-end space-y-2 sm:space-x-2 mb-10">
                 <div>
                     <label for="search" class="block font-semibold">What</label>
-                    <input id="search" type="text" placeholder="Job title" class="input" />
+                    <input id="search" type="text" placeholder="Job title" class="input w-full" />
                 </div>
                 <input type="text" placeholder="Job title" class="input" />
                 <div>
                     <label for="where" class="block font-semibold">Where:</label>
-                    <input id="where" type="text" placeholder="Job title" class="input" />
+                    <input id="where" type="text" placeholder="Job title" class="input w-full" />
                 </div>
                 <button class="btn btn-primary">Seek</button>
             </form>

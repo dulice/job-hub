@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <Hero />
-    <JobsList limit="3" />
+    <JobsList :limit="3" />
     <div class="flex justify-center my-4">
       <RouterLink to="/jobs" class="btn btn-primary">View More Jobs</RouterLink>
     </div>
