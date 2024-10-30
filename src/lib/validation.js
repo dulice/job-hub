@@ -1,4 +1,11 @@
-import { email, helpers, minLength, required, sameAs } from "@vuelidate/validators";
+import {
+  email,
+  helpers,
+  minLength,
+  required,
+  requiredIf,
+  sameAs,
+} from "@vuelidate/validators";
 
 export const rules = {
   title: { required: helpers.withMessage("title is required", required) },
@@ -17,7 +24,10 @@ export const userSinginRules = {
   },
   password: {
     minLength: minLength(8),
-    required: helpers.withMessage("Password must be at least 8 characters", required)
+    required: helpers.withMessage(
+      "Password must be at least 8 characters",
+      required
+    ),
   },
 };
 
@@ -35,7 +45,10 @@ export const userRegisterRules = {
   },
   password: {
     minLength: minLength(8),
-    required: helpers.withMessage("Password must be at least 8 characters", required)
+    required: helpers.withMessage(
+      "Password must be at least 8 characters",
+      required
+    ),
   },
 };
 
@@ -51,5 +64,51 @@ export const userUpdateRules = {
   phone: {
     required: helpers.withMessage("contactPhone is required", required),
   },
+};
+
+export const searchRules = {
+  title: required,
+  location: {
+    type: String,
+  },
+};
+
+function fileTypeValidator(file) {
+  if (!file) return false;
+  const allowedTypes = [
+    'application/pdf', // PDF
+    'application/msword', // Word (.doc)
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // Word (.docx)
+    'text/plain', // Text files (.txt)
+  ];
+  return allowedTypes.includes(file.type);
 }
 
+export const applyRules = {
+  firstName: {
+    required: helpers.withMessage("This field cannot be empty", required),
+  },
+  lastName: {
+    required: helpers.withMessage("This field cannot be empty", required),
+  },
+  location: {
+    required: helpers.withMessage("This field cannot be empty", required),
+  },
+  phoneNumber: {
+    required: helpers.withMessage("This field cannot be empty", required),
+  },
+  email: {
+    required: helpers.withMessage("This field cannot be empty", required),
+    email,
+  },
+  expectedSalary: {
+    required: helpers.withMessage("This field cannot be empty", required),
+  },
+  resume: {
+    required,
+  },
+  coverLetter: {
+    required: helpers.withMessage("This field cannot be empty", required),
+    minLength: minLength(50),
+  },
+};

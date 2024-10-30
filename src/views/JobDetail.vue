@@ -17,12 +17,31 @@
         <div class="card space-y-2">
           <p>{{ job.description }}</p>
           <p class="font-semibold text-end">{{ job.salary }} / Year</p>
+          <div class="flex space-x-4">
+            <RouterLink :to="`/apply/${job.$id}`" class="btn btn-primary"
+              >Quick Apply</RouterLink
+            >
+            <button
+              v-if="user.saved.map((save) => save.$id)?.includes(job.$id)"
+              class="btn-outline"
+              @click="handleSaved"
+            >
+              <span>{{isSaving ? "unSaving..." : "Saved" }}</span>
+              <Icon icon="mdi-heart" class="text-red-600" />
+            </button>
+            <button v-else @click="handleSaved" class="btn-outline">
+              <span>{{isSaving ? "Saving..." : "Save"}}</span>
+              <Icon icon="mdi-heart-outline" class="text-gray-600" />
+            </button>
+          </div>
         </div>
       </div>
+
+      <!-- company detail  -->
       <div class="col-span-4 space-y-4">
         <div class="card">
           <RouterLink
-            :to="`/profile/${job.company?.$id}`"
+            :to="{ name: 'profile', params: { id: job.company?.$id } }"
             class="text-lg font-semibold hover:text-green-600"
             >{{ job.company.name }}</RouterLink
           >
@@ -42,7 +61,7 @@
           </p>
         </div>
 
-        <div v-if="user.$id === job.company.$id" class="card space-y-2">
+        <div v-if="user && user.$id === job.company.$id" class="card space-y-2">
           <p class="text-lg font-semibold">Manage Job</p>
           <button @click="handleEdit" class="btn btn-primary w-full">
             <Icon icon="mdi-edit" /><span>Edit</span>
@@ -67,19 +86,29 @@ import { RouterLink, useRoute, useRouter } from "vue-router";
 import { Icon } from "@iconify/vue";
 import Back from "../components/Back.vue";
 import Loader from "../components/Loader.vue";
-import { useDeleteJob, useGetJob, useGetUser } from "../lib/appWrite/queries";
+import {
+  useGetUser,
+  useSaveUnsaveJob,
+  useUpdateUser,
+} from "../lib/appWrite/query/profileQuery";
+import { useDeleteJob, useGetJob } from "../lib/appWrite/query/jobQuery";
 
 const { params } = useRoute();
 const router = useRouter();
 const { data: user } = useGetUser();
 const { data: job, isPending } = useGetJob(params.id);
 const { mutate, isPending: isDeleting } = useDeleteJob();
+const { mutate: saveJob, isPending: isSaving } = useSaveUnsaveJob();
+
 const handleDelete = async () => {
   mutate(params.id);
   router.back();
 };
 const handleEdit = () => {
   router.push(`/jobs/edit/${params.id}`);
+};
+const handleSaved = () => {
+  saveJob({ id: user.value.$id, jobId: params.id });
 };
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <div v-if="type === 'text'" class="flex flex-col">
-    <label :for="name">{{ label }}</label>
+    <label :for="name" class="font-semibold">{{ label }}</label>
     <input
       :id="name"
       :type="type"
@@ -15,7 +15,7 @@
   </div>
 
   <div v-else-if="type === 'textarea'" class="flex flex-col">
-    <label :for="name">{{ label }}</label>
+    <label :for="name" class="font-semibold">{{ label }}</label>
     <textarea
       rows="5"
       :id="name"
@@ -38,9 +38,23 @@
       :name="name"
       v-model="value"
     >
-      <option value="" disabled>Select Job Type</option>
       <option v-for="type in data" :value="type">{{ type }}</option>
     </select>
+    <small class="text-red-500" v-if="isError">
+      {{ errorMessage }}
+    </small>
+  </div>
+
+  <div v-if="type === 'file'" class="flex flex-col">
+    <label :for="name" class="font-semibold">{{ label }}</label>
+    <input
+      :id="name"
+      :type="type"
+      :class="['input', isError ? 'border-red-500' : 'border-gray-400']"
+      :name="name"
+      :accept="accept"
+      @change="handleFile"
+    />
     <small class="text-red-500" v-if="isError">
       {{ errorMessage }}
     </small>
@@ -56,8 +70,13 @@ const props = defineProps({
   isError: { type: Boolean },
   errorMessage: { type: String },
   data: { type: Array},
+  accept: {type: String},
 });
 const value = defineModel();
+const emit = defineEmits(['handleFile'])
+const handleFile = (e) => {
+  emit('handleFile', e)
+}
 </script>
 
 <style lang="scss" scoped></style>

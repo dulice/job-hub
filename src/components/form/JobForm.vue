@@ -70,10 +70,12 @@
 import useVuelidate from "@vuelidate/core";
 import { onMounted, reactive } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { useAddJob, useGetJob, useGetUser, useUpdateJob } from "../lib/appWrite/queries";
-import { rules } from "../lib/validation";
-import { salaries, types } from "../lib/data";
+import { rules } from "../../lib/validation";
+import { salaries, types } from "../../lib/data";
 import FormField from "./FormField.vue";
+import { useAddJob, useUpdateJob, useGetJob } from "../../lib/appWrite/query/jobQuery";
+import { useGetUser } from "../../lib/appWrite/query/profileQuery";
+
 const router = useRouter();
 const { params } = useRoute();
 const props = defineProps({ status: String });

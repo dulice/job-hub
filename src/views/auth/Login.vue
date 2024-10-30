@@ -28,11 +28,11 @@
 
 <script setup>
 import { reactive } from "vue";
-import FormField from "../../components/FormField.vue";
+import FormField from "../../components/form/FormField.vue";
 import useVuelidate from "@vuelidate/core";
 import { userSinginRules } from "../../lib/validation";
-import { useSignIn } from "../../lib/appWrite/queries";
 import { useRouter } from "vue-router";
+import { useSignIn } from "../../lib/appWrite/query/profileQuery";
 
 const router = useRouter();
 const { mutate, isPending } = useSignIn();

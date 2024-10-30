@@ -1,54 +1,6 @@
-import { account, appwriteConfig, database } from "./config";
 import { ID, Query } from "appwrite";
-
-const { databaseId, jobCollectionId, companyCollectionId } = appwriteConfig;
-
-export async function getJobs() {
-  try {
-    const jobs = await database.listDocuments(databaseId, jobCollectionId);
-    return jobs.documents;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export async function getJob(id) {
-  try {
-    const job = await database.getDocument(databaseId, jobCollectionId, id);
-    return job;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export async function addJob(data) {
-  const job = await database.createDocument(
-    databaseId,
-    jobCollectionId,
-    ID.unique(),
-    data
-  );
-  return job;
-}
-
-export async function putJob(id, data) {
-  const jobs = await database.updateDocument(
-    databaseId,
-    jobCollectionId,
-    id,
-    data
-  );
-  return jobs;
-}
-
-export async function deleteJob(id) {
-  try {
-    const jobs = await database.deleteDocument(databaseId, jobCollectionId, id);
-    return jobs;
-  } catch (error) {
-    console.log(error);
-  }
-}
+import { account, appwriteConfig, database } from "../config";
+const { databaseId, companyCollectionId } = appwriteConfig;
 
 export async function deleteCompany(id) {
   try {
@@ -79,6 +31,7 @@ export async function getCompany(id) {
 export async function getUser() {
   try {
     const user = await account.get();
+    if (!user) throw Error;
     const company = await database.listDocuments(
       databaseId,
       companyCollectionId,
@@ -91,15 +44,44 @@ export async function getUser() {
 }
 
 export async function updateUser(id, data) {
-  const company = await database.updateDocument(
-    databaseId,
-    companyCollectionId,
-    id,
-    data
-  );
-  return company;
+  try {
+    const company = await database.updateDocument(
+      databaseId,
+      companyCollectionId,
+      id,
+      data
+    );
+    return company;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
+export async function saveUnsaveJob(id, savedId) {
+  const company = await database.getDocument(databaseId, companyCollectionId, id);
+  const hasSaved = company.saved.map(save => save.$id).includes(savedId);
+  if(hasSaved) {
+    const unsaved = await database.updateDocument(
+      databaseId,
+      companyCollectionId,
+      id,
+      {
+        saved: company.saved.filter(save => save.$id !== savedId),
+      }
+    );
+    return unsaved;
+  } else {
+    const saveJob = await database.updateDocument(
+      databaseId,
+      companyCollectionId,
+      id,
+      {
+        saved: [savedId, ...company.saved],
+      }
+    );
+    return saveJob;
+  }
+}
 
 export async function registerUser(data) {
   const result = await signUp(data);

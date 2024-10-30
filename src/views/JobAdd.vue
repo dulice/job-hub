@@ -8,7 +8,7 @@
 
 <script setup>
 import Back from '../components/Back.vue';
-import JobForm from '../components/JobForm.vue';
+import JobForm from '../components/form/JobForm.vue';
 
 
 </script>

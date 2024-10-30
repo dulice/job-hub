@@ -2,7 +2,7 @@
   <div class="card space-y-4">
     <div class="flex justify-between items-center">
       <p class="font-semibold text-green-600 text-lg">{{ data.name }}</p>
-      <RouterLink v-if="data.$id === user.$id" :to="`/profile/edit/${data.$id}`"
+      <RouterLink v-if="data.$id === user?.$id" :to="`/profile/edit/${data.$id}`"
         class="bg-green-200 p-2 rounded-full active:bg-green-300 transition-all"
         ><Icon icon="mdi-edit" class="text-xl"
       /></RouterLink>
@@ -19,7 +19,7 @@
 import { RouterLink } from "vue-router";
 import BtnIcon from "../components/BtnIcon.vue";
 import { Icon } from "@iconify/vue/dist/iconify.js";
-import { useGetUser } from "../lib/appWrite/queries";
+import { useGetUser } from "../lib/appWrite/query/profileQuery";
 
 const { data: user } = useGetUser();
 const props = defineProps({

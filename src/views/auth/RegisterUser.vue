@@ -49,11 +49,11 @@
 
 <script setup>
 import { reactive } from "vue";
-import FormField from "../../components/FormField.vue";
+import FormField from "../../components/form/FormField.vue";
 import useVuelidate from "@vuelidate/core";
 import { userRegisterRules } from "../../lib/validation";
-import { useCreateUser } from "../../lib/appWrite/queries";
 import { useRouter, RouterLink } from "vue-router";
+import { useCreateUser } from "../../lib/appWrite/query/profileQuery";
 
 const router = useRouter();
 const { mutate, isPending } = useCreateUser();

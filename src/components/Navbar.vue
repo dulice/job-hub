@@ -28,7 +28,7 @@
           >Add job</RouterLink
         >
 
-        <div v-if="data?.$id" class="relative inline-block text-left">
+        <div v-if="data" class="relative inline-block text-left">
           <button @click.stop="toggleActive" class="btn-outline">
             <span>{{ data.name }}</span>
             <Icon icon="mdi-chevron-down" />
@@ -41,7 +41,7 @@
           >
             <div class="py-1">
               <RouterLink
-                :to="`/profile/${data.$id}`"
+                :to="{name: 'profile', params: {id: data.$id}}"
                 class="flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 hover:bg-green-200"
               >
                 <Icon icon="mdi-user" /> <span>Profile</span>
@@ -125,12 +125,12 @@
 <script setup>
 import { RouterLink, useRoute, useRouter } from "vue-router";
 import Logo from "../assets/logo.png";
-import { useGetUser, useLogout } from "../lib/appWrite/queries";
 import { onMounted, ref } from "vue";
 import { Icon } from "@iconify/vue/dist/iconify.js";
+import { useGetUser, useLogout } from "../lib/appWrite/query/profileQuery";
 
 const { mutate, isSuccess, isPending } = useLogout();
-const { data } = useGetUser();
+const { data, isError } = useGetUser();
 const route = useRoute();
 const router = useRouter();
 const isActive = ref(false);

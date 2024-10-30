@@ -8,7 +8,7 @@
         </p>
         <FormField
           type="text"
-          label="Company Name"
+          label="Name"
           name="name"
           v-model="form.name"
           placeholder="Tesla"
@@ -35,7 +35,7 @@
         />
         <FormField
           type="textarea"
-          label="About company"
+          label="About"
           name="description"
           v-model="form.description"
           :isError="v$.description?.$error"
@@ -53,12 +53,12 @@
 
 <script setup>
 import { onMounted, reactive } from "vue";
-import FormField from "../components/FormField.vue";
+import FormField from "../components/form/FormField.vue";
 import useVuelidate from "@vuelidate/core";
 import Back from "../components/Back.vue";
 import { userUpdateRules } from "../lib/validation";
 import { useRoute, useRouter } from "vue-router";
-import { useGetCompany, useUpdateUser } from "../lib/appWrite/queries";
+import { useGetCompany, useUpdateUser } from "../lib/appWrite/query/profileQuery";
 
 const router = useRouter();
 const { params } = useRoute();
