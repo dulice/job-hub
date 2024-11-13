@@ -9,6 +9,7 @@ import {
   signout,
   updateUser,
 } from "../api/profileApi";
+import { useRouter } from "vue-router";
 
 export const useDeleteCompany = () => {
   const queryClient = useQueryClient();
@@ -20,33 +21,35 @@ export const useDeleteCompany = () => {
   });
 };
 
-export const useGetCompany = (id) => {
+export const useGetCompany = (id, isMyProfile) => {
   return useQuery({
     queryKey: ["Company", { id }],
-    queryFn: () => getCompany(id),
-    enabled: !!id,
+    queryFn: () => (isMyProfile?.value ? getCompany(id.value) : getCompany(id)),
   });
 };
 
 export const useCreateUser = () => {
   const queryClient = useQueryClient();
-
+  const router = useRouter();
   return useMutation({
     mutationFn: (data) => registerUser(data),
     onSuccess: (data) => {
-      queryClient.setQueryData(["User"], data),
-        queryClient.invalidateQueries(["User"]);
+      queryClient.setQueryData(["User"], data);
+      queryClient.invalidateQueries(["User"]);
+      router.push("/login");
     },
   });
 };
 
 export const useSignIn = () => {
   const queryClient = useQueryClient();
+  const router = useRouter();
   return useMutation({
     mutationFn: (data) => login(data),
     onSuccess: (data) => {
-      queryClient.setQueryData(["User"], data),
-        queryClient.invalidateQueries(["User"]);
+      queryClient.setQueryData(["User"], data);
+      queryClient.invalidateQueries({ queryKey: ["User"] });
+      router.push("/");
     },
   });
 };
@@ -55,6 +58,10 @@ export const useGetUser = () => {
   return useQuery({
     queryKey: ["User"],
     queryFn: getUser,
+    retry: false,
+    throwOnError: (error) => {
+      console.error("Error fetching current user:", error);
+    },
   });
 };
 
@@ -75,7 +82,7 @@ export const useSaveUnsaveJob = () => {
     mutationFn: ({ id, jobId }) => saveUnsaveJob(id, jobId),
     onSuccess: (data) => {
       queryClient.setQueryData(["User"], data);
-      queryClient.invalidateQueries(["User"]);
+      queryClient.invalidateQueries({ queryKey: ["User"] });
     },
   });
 };

@@ -1,6 +1,7 @@
 <template>
     <Loader v-if="isPending" />
     <div v-else class="container card space-y-2 my-4">
+        <Back />
         <p class="text-gray-600">Applying For</p>
         <p class="text-2xl font-semibold">{{ data?.title }}</p>
         <p class="text-xl">{{ data?.company.name }}</p>
@@ -14,6 +15,7 @@ import { RouterLink, useRoute } from 'vue-router';
 import Loader from '../components/Loader.vue';
 import ApplyForm from '../components/form/ApplyForm.vue';
 import { useGetJob } from '../lib/appWrite/query/jobQuery';
+import Back from '../components/Back.vue';
 
 const { params } = useRoute();
 const { data, isPending } = useGetJob(params.jobId);

@@ -24,8 +24,9 @@ export const useGetJobs = ({ limit }) => {
 
 export const useSearchJobs = (q, location) => {
   return useQuery({
-    queryKey: ["jobs", "search"],
-    queryFn: () => searchJobs(q, location),
+    queryKey: ["jobs", {q}],
+    queryFn: () => searchJobs(q.value, location.value),
+    enabled: !!q.value,
   });
 };
 

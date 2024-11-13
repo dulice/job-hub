@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@tanstack/vue-query": "^5.59.13",
+    "@tanstack/vue-query-devtools": "^5.59.20",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
     "appwrite": "^16.0.2",

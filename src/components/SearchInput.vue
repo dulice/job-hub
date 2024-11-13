@@ -18,7 +18,7 @@
           v-model="form.location"
           label="Where:"
         />
-        <button type="submit" class="btn btn-primary">Seek</button>
+        <button type="submit" class="btn btn-primary" :disabled="form.title.trim().length < 1">Seek</button>
       </form>
     </div>
   </div>
@@ -45,6 +45,8 @@ const handleSearch = () => {
     });
   }
 };
+
+
 </script>
 
 <style scoped>

@@ -7,8 +7,7 @@
       :class="['input', isError ? 'border-red-500' : 'border-gray-400']"
       :placeholder="placeholder"
       :name="name"
-      v-model="value"
-    />
+      v-model="value" />
     <small class="text-red-500" v-if="isError">
       {{ errorMessage }}
     </small>
@@ -23,8 +22,7 @@
       :class="['input', isError ? 'border-red-500' : 'border-gray-400']"
       :placeholder="placeholder"
       :name="name"
-      v-model="value"
-    ></textarea>
+      v-model="value"></textarea>
     <small class="text-red-500" v-if="isError">
       {{ errorMessage }}
     </small>
@@ -36,8 +34,7 @@
       :id="name"
       :class="['input', isError ? 'border-red-500' : 'border-gray-400']"
       :name="name"
-      v-model="value"
-    >
+      v-model="value">
       <option v-for="type in data" :value="type">{{ type }}</option>
     </select>
     <small class="text-red-500" v-if="isError">
@@ -53,8 +50,7 @@
       :class="['input', isError ? 'border-red-500' : 'border-gray-400']"
       :name="name"
       :accept="accept"
-      @change="handleFile"
-    />
+      @change="handleFile" />
     <small class="text-red-500" v-if="isError">
       {{ errorMessage }}
     </small>
@@ -69,14 +65,14 @@ const props = defineProps({
   placeholder: { type: String },
   isError: { type: Boolean },
   errorMessage: { type: String },
-  data: { type: Array},
-  accept: {type: String},
+  data: { type: Array },
+  accept: { type: String },
 });
 const value = defineModel();
-const emit = defineEmits(['handleFile'])
+const emit = defineEmits(["handleFile"]);
 const handleFile = (e) => {
-  emit('handleFile', e)
-}
+  emit("handleFile", e);
+};
 </script>
 
 <style lang="scss" scoped></style>

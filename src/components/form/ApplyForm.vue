@@ -9,16 +9,14 @@
           v-model="form.firstName"
           placeholder="John"
           :isError="v$.firstName?.$error"
-          :errorMessage="v$.firstName?.$errors[0]?.$message"
-        />
+          :errorMessage="v$.firstName?.$errors[0]?.$message" />
         <FormField
           v-model="form.lastName"
           type="text"
           name="lname"
           label="Last Name"
           :isError="v$.lastName.$error"
-          :errorMessage="v$.lastName?.$errors[0]?.$message"
-        />
+          :errorMessage="v$.lastName?.$errors[0]?.$message" />
       </div>
       <FormField
         type="text"
@@ -26,24 +24,21 @@
         label="Your Location"
         v-model="form.location"
         :isError="v$.location.$error"
-        :errorMessage="v$.location?.$errors[0]?.$message"
-      />
+        :errorMessage="v$.location?.$errors[0]?.$message" />
       <FormField
         v-model="form.phoneNumber"
         type="text"
         name="phone"
         label="Your Phone Number"
         :isError="v$.phoneNumber.$error"
-        :errorMessage="v$.phoneNumber?.$errors[0]?.$message"
-      />
+        :errorMessage="v$.phoneNumber?.$errors[0]?.$message" />
       <FormField
         v-model="form.email"
         type="text"
         name="email"
         label="Your Email"
         :isError="v$.email.$error"
-        :errorMessage="v$.email?.$errors[0]?.$message"
-      />
+        :errorMessage="v$.email?.$errors[0]?.$message" />
       <FormField
         type="select"
         label="Salary:"
@@ -51,8 +46,7 @@
         v-model="form.expectedSalary"
         :isError="v$.expectedSalary?.$error"
         :errorMessage="v$.expectedSalary.$errors[0]?.$message"
-        :data="salaries"
-      />
+        :data="salaries" />
       <FormField
         @handleFile="handelChange"
         type="file"
@@ -60,8 +54,7 @@
         label="Your Resume"
         accept=".pdf, .doc, .docx, .txt"
         :isError="v$.resume.$error"
-        :errorMessage="v$.resume?.$errors[0]?.$message"
-      />
+        :errorMessage="v$.resume?.$errors[0]?.$message" />
       <FormField
         v-model="form.coverLetter"
         type="textarea"
@@ -69,8 +62,7 @@
         label="Cover Letter"
         placeholder="Introduce yourself and briefly explain why you are suitable for this role. Consider your relevant skills, qualifications and related experience."
         :isError="v$.coverLetter.$error"
-        :errorMessage="v$.coverLetter?.$errors[0]?.$message"
-      />
+        :errorMessage="v$.coverLetter?.$errors[0]?.$message" />
       <div class="flex justify-end">
         <button type="submit" class="btn btn-primary" :disabled="isPending">
           {{ isPending ? "Submitting..." : "Submit" }}
@@ -93,7 +85,7 @@ import { toast } from "vue3-toastify";
 import { useRoute, useRouter } from "vue-router";
 
 const props = defineProps({
-  job: Object
+  job: Object,
 });
 const { data: user } = useGetUser();
 const router = useRouter();
@@ -110,6 +102,7 @@ const form = reactive({
   resume: [],
   coverLetter: "",
   job: params.jobId,
+  user: user.value.$id,
 });
 const isPending = ref(false);
 const v$ = useVuelidate(applyRules, form);

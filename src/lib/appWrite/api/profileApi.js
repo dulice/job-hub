@@ -40,6 +40,7 @@ export async function getUser() {
     return company.documents[0];
   } catch (error) {
     console.log(error);
+    return null;
   }
 }
 
@@ -58,15 +59,19 @@ export async function updateUser(id, data) {
 }
 
 export async function saveUnsaveJob(id, savedId) {
-  const company = await database.getDocument(databaseId, companyCollectionId, id);
-  const hasSaved = company.saved.map(save => save.$id).includes(savedId);
-  if(hasSaved) {
+  const company = await database.getDocument(
+    databaseId,
+    companyCollectionId,
+    id
+  );
+  const hasSaved = company.saved.map((save) => save.$id).includes(savedId);
+  if (hasSaved) {
     const unsaved = await database.updateDocument(
       databaseId,
       companyCollectionId,
       id,
       {
-        saved: company.saved.filter(save => save.$id !== savedId),
+        saved: company.saved.filter((save) => save.$id !== savedId),
       }
     );
     return unsaved;
@@ -114,14 +119,15 @@ export async function signUp(data) {
 
 export async function login(data) {
   const { email, password } = data;
-  try {
-    const result = await account.createEmailPasswordSession(email, password);
-    return result;
-  } catch (error) {
-    console.log(error);
-  }
+  const result = await account.createEmailPasswordSession(email, password);
+  return result;
 }
 
 export async function signout() {
-  await account.deleteSession("current");
+  try {
+    await account.deleteSession("current");
+    console.log("User logged out successfully");
+  } catch (error) {
+    console.error("Error logging out:", error);
+  }
 }

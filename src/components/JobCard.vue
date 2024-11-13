@@ -2,11 +2,15 @@
   <div class="card-primary">
     <div class="space-y-2">
       <small>{{ props.job.type }}</small>
-      <p class="font-semibold text-lg">{{ props.job.title }}</p>
+      <RouterLink
+        :to="`/jobs/${props.job.$id}`"
+        class="font-semibold text-lg block hover:underline"
+        >{{ props.job.title }}</RouterLink
+      >
     </div>
 
     <div class="divider"></div>
-    <p :class="{'line-clamp-3': !showMore}">
+    <p :class="{ 'line-clamp-3': !showMore }">
       {{ props.job.description }}
     </p>
     <button @click="handleShow" class="text-gray-500 cursor-pointer">
@@ -20,7 +24,16 @@
         <Icon icon="mdi-location" />
         <p>{{ props.job.location }}</p>
       </div>
-      <RouterLink :to="`/jobs/${props.job.$id}`" class="btn btn-primary text-nowrap"
+      <RouterLink
+        v-if="isAuth"
+        :to="`/jobs/applied/${props.job.$id}`"
+        class="btn btn-primary text-nowrap"
+        >View canditates</RouterLink
+      >
+      <RouterLink
+        v-else
+        :to="`/jobs/${props.job.$id}`"
+        class="btn btn-primary text-nowrap"
         >Read More</RouterLink
       >
     </div>
@@ -34,6 +47,7 @@ import { Icon } from "@iconify/vue";
 
 const props = defineProps({
   job: Object,
+  isAuth: Boolean,
 });
 const showMore = ref(false);
 

@@ -15,22 +15,24 @@
           </div>
         </div>
         <div class="card space-y-2">
+          <p class="text-sm text-gray-700">
+            {{ job.applied.length }} canditate apply for this job.
+          </p>
           <p>{{ job.description }}</p>
           <p class="font-semibold text-end">{{ job.salary }} / Year</p>
           <div class="flex space-x-4">
-            <RouterLink :to="`/apply/${job.$id}`" class="btn btn-primary"
-              >Quick Apply</RouterLink
-            >
+            <button @click="handleApply" class="btn btn-primary">
+              Quick Apply
+            </button>
             <button
-              v-if="user.saved.map((save) => save.$id)?.includes(job.$id)"
+              v-if="user?.saved.map((save) => save.$id)?.includes(job.$id)"
               class="btn-outline"
-              @click="handleSaved"
-            >
-              <span>{{isSaving ? "unSaving..." : "Saved" }}</span>
+              @click="handleSaved">
+              <span>{{ isSaving ? "unSaving..." : "Saved" }}</span>
               <Icon icon="mdi-heart" class="text-red-600" />
             </button>
             <button v-else @click="handleSaved" class="btn-outline">
-              <span>{{isSaving ? "Saving..." : "Save"}}</span>
+              <span>{{ isSaving ? "Saving..." : "Save" }}</span>
               <Icon icon="mdi-heart-outline" class="text-gray-600" />
             </button>
           </div>
@@ -69,8 +71,7 @@
           <button
             @click="handleDelete"
             class="btn btn-danger w-full"
-            :disabled="isDeleting"
-          >
+            :disabled="isDeleting">
             <Icon icon="mdi-trash" /><span>{{
               isDeleting ? "Deleting..." : "Delete"
             }}</span>
@@ -89,7 +90,6 @@ import Loader from "../components/Loader.vue";
 import {
   useGetUser,
   useSaveUnsaveJob,
-  useUpdateUser,
 } from "../lib/appWrite/query/profileQuery";
 import { useDeleteJob, useGetJob } from "../lib/appWrite/query/jobQuery";
 
@@ -108,7 +108,18 @@ const handleEdit = () => {
   router.push(`/jobs/edit/${params.id}`);
 };
 const handleSaved = () => {
-  saveJob({ id: user.value.$id, jobId: params.id });
+  if (user.value) {
+    saveJob({ id: user.value.$id, jobId: params.id });
+  } else {
+    router.push({ name: "login" });
+  }
+};
+const handleApply = () => {
+  if (user.value) {
+    router.push(`/apply/${job.value.$id}`);
+  } else {
+    router.push({ name: "login" });
+  }
 };
 </script>
 
