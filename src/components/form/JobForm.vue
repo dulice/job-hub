@@ -8,8 +8,7 @@
         v-model="form.title"
         placeholder="Vue Develper"
         :isError="v$.title?.$error"
-        :errorMessage="v$.title.$errors[0]?.$message"
-      />
+        :errorMessage="v$.title.$errors[0]?.$message" />
       <FormField
         type="text"
         label="Job location:"
@@ -17,8 +16,7 @@
         v-model="form.location"
         placeholder="NY,UK"
         :isError="v$.location?.$error"
-        :errorMessage="v$.location.$errors[0]?.$message"
-      />
+        :errorMessage="v$.location.$errors[0]?.$message" />
       <FormField
         type="textarea"
         label="Job Description:"
@@ -26,8 +24,7 @@
         v-model="form.description"
         placeholder="Descrption..."
         :isError="v$.description?.$error"
-        :errorMessage="v$.description.$errors[0]?.$message"
-      />
+        :errorMessage="v$.description.$errors[0]?.$message" />
       <div class="grid grid-cols-2 gap-2">
         <FormField
           type="select"
@@ -36,8 +33,7 @@
           v-model="form.type"
           :isError="v$.type?.$error"
           :errorMessage="v$.type.$errors[0]?.$message"
-          :data="types"
-        />
+          :data="types" />
         <FormField
           type="select"
           label="Salary:"
@@ -45,8 +41,7 @@
           v-model="form.salary"
           :isError="v$.salary?.$error"
           :errorMessage="v$.salary.$errors[0]?.$message"
-          :data="salaries"
-        />
+          :data="salaries" />
       </div>
 
       <!-- action -->
@@ -54,8 +49,7 @@
         <button
           v-if="status === 'add'"
           :disabled="isAdding"
-          class="btn btn-dark"
-        >
+          class="btn btn-dark">
           {{ isAdding ? "Adding Job..." : "Add Job" }}
         </button>
         <button v-else class="btn btn-primary" :disabled="isUpdating">
@@ -73,7 +67,11 @@ import { useRoute, useRouter } from "vue-router";
 import { rules } from "../../lib/validation";
 import { salaries, types } from "../../lib/data";
 import FormField from "./FormField.vue";
-import { useAddJob, useUpdateJob, useGetJob } from "../../lib/appWrite/query/jobQuery";
+import {
+  useAddJob,
+  useUpdateJob,
+  useGetJob,
+} from "../../lib/appWrite/query/jobQuery";
 import { useGetUser } from "../../lib/appWrite/query/profileQuery";
 
 const router = useRouter();
@@ -81,7 +79,7 @@ const { params } = useRoute();
 const props = defineProps({ status: String });
 const { mutate: addJob, isPending: isAdding } = useAddJob();
 const { mutate: putJob, isPending: isUpdating } = useUpdateJob();
-const {data: user} = useGetUser();
+const { data: user } = useGetUser();
 
 const form = reactive({
   title: "",
@@ -89,7 +87,7 @@ const form = reactive({
   description: "",
   location: "",
   salary: "",
-  company: user.value.$id,
+  company: user.value?.$id,
 });
 
 const v$ = useVuelidate(rules, form);

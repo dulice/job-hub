@@ -115,11 +115,7 @@ const handleSaved = () => {
   }
 };
 const handleApply = () => {
-  if (user.value) {
-    router.push(`/apply/${job.value.$id}`);
-  } else {
-    router.push({ name: "login" });
-  }
+  router.push(`/apply/${job.value.$id}`);
 };
 </script>
 

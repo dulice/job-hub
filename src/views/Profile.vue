@@ -11,11 +11,10 @@
         </div>
       </div>
     </div>
-    <div v-else-if="user.$id === data.$id" class="card">
+    <div v-else-if="user?.$id === data.$id" class="card">
       <Tab />
     </div>
   </div>
-
 </template>
 
 <script setup>
@@ -28,19 +27,19 @@ import Tab from "../components/Tab.vue";
 import { ref, watchEffect } from "vue";
 
 const props = defineProps({
-  id: String
-})
+  id: String,
+});
 
 const { data: user } = useGetUser();
 const userId = ref(props.id);
 const isMyProfile = ref(true);
 const { data, isPending, refetch } = useGetCompany(userId, isMyProfile);
-watchEffect(() => {
-  if(userId.value !== props.id) {
+watchEffect(async () => {
+  if (userId.value !== props.id) {
     userId.value = props.id;
-    refetch();
+    await refetch();
   }
-})
+});
 </script>
 
 <style lang="scss" scoped></style>

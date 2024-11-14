@@ -28,7 +28,11 @@ export const routes = [
   },
   { path: "/jobs/:id", name: "job", component: JobDetail },
   { path: "/jobs/edit/:id", name: "edit", component: JobEdit },
-  { path: "/jobs/applied/:id", name: "edit", component: AppliedCaditate },
+  {
+    path: "/jobs/applied/:id",
+    name: "appliedCanditate",
+    component: AppliedCaditate,
+  },
   { path: "/jobs/add", name: "add", component: JobAdd },
   { path: "/register", name: "register", component: Register },
   { path: "/login", name: "login", component: Login },
@@ -54,8 +58,25 @@ export const routes = [
   },
   { path: "/:pathMatch(.*)*", name: "404", component: NotFound },
 ];
-const protectedRoutes = ["apply"];
+const protectedRoutes = [
+  "add",
+  "edit",
+  "profileEdit",
+  "appliedCanditate",
+  "apply",
+  "chats",
+  "chat",
+];
 export const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const user = JSON.parse(localStorage.getItem("cookieFallback"));
+  if (protectedRoutes.includes(to.name) && user?.length === 0) {
+    next("/login");
+  } else {
+    next();
+  }
 });

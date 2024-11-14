@@ -58,9 +58,8 @@ export const useGetUser = () => {
   return useQuery({
     queryKey: ["User"],
     queryFn: getUser,
-    retry: false,
-    throwOnError: (error) => {
-      console.error("Error fetching current user:", error);
+    onSuccess: (data) => {
+      console.log("dd", data);
     },
   });
 };

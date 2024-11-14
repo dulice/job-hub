@@ -1,3 +1,9 @@
+import { appwriteConfig } from "./appWrite/config";
+
+const { databaseId, messageCollectionId } = appwriteConfig;
+
+export const channel = `databases.${databaseId}.collections.${messageCollectionId}.documents`;
+
 export const ids = (id1, id2) => {
   if (id1 > id2) {
     return id1 + "_" + id2;
@@ -7,7 +13,7 @@ export const ids = (id1, id2) => {
 };
 
 export function groupByDate(documents) {
-  return documents?.reduce((acc, doc) => {
+  return documents.reduce((acc, doc) => {
     const date = new Date(doc.$createdAt).toDateString();
     if (!acc[date]) {
       acc[date] = [];

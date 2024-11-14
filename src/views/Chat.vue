@@ -70,7 +70,7 @@
 </template>
 
 <script setup>
-import { useGetCompany, useGetUser } from "../lib/appWrite/query/profileQuery";
+import { useGetCompany } from "../lib/appWrite/query/profileQuery";
 import DefautlImg from "../assets/logo.png";
 import { Icon } from "@iconify/vue/dist/iconify.js";
 import { nextTick, ref, watchEffect } from "vue";
@@ -79,8 +79,8 @@ import {
   useGetMessages,
   useSendMessage,
 } from "../lib/appWrite/query/messageQuery";
-import { groupByDate, ids } from "../lib/constant";
-import { appwriteConfig, client } from "../lib/appWrite/config";
+import { channel, groupByDate, ids } from "../lib/constant";
+import { client } from "../lib/appWrite/config";
 import Loader from "../components/Loader.vue";
 import Back from "../components/Back.vue";
 
@@ -90,8 +90,6 @@ const props = defineProps({
     senderId: String,
   },
 });
-const { databaseId, messageCollectionId } = appwriteConfig;
-const channel = `databases.${databaseId}.collections.${messageCollectionId}.documents`;
 
 const chatContainer = ref(null);
 const message = ref("");
@@ -116,9 +114,9 @@ const scrollToBottom = () => {
     }
   });
 };
-watchEffect(() => {
+watchEffect(async () => {
   if (props.query.receivedId || props.query.senderId) {
-    refetch();
+    await refetch();
   }
   isFetchingMessages.value = isPending.value;
   messages.value = fetchMessages.value;

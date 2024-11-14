@@ -47,7 +47,9 @@ body {
 .card-primary {
   @apply p-4 rounded-sm bg-green-100;
 }
-
+.badge {
+  @apply w-4 h-4 text-xs text-center text-white bg-red-500 rounded-full
+}
 .divider {
   @apply h-[2px] bg-gray-300 rounded-md my-2;
 }

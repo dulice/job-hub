@@ -19,9 +19,15 @@
         <RouterLink
           v-if="data"
           to="/chats"
-          :class="['link', route.path === '/chats' ? 'bg-green-300' : '']"
-          ><Icon icon="mdi-chat-outline" />Chat</RouterLink
-        >
+          :class="[
+            'link relative',
+            route.path === '/chats' ? 'bg-green-300' : '',
+          ]"
+          ><Icon icon="mdi-chat-outline" /><span>Chat</span>
+          <small v-if="notifications?.totalCount > 0" class="badge">{{
+            notifications?.totalCount
+          }}</small>
+        </RouterLink>
         <RouterLink
           to="/jobs"
           :class="['link', route.path === '/jobs' ? 'bg-green-300' : '']"
@@ -79,6 +85,18 @@
         ]"
         >home</RouterLink
       >
+      <RouterLink
+        v-if="data"
+        to="/chats"
+        :class="[
+          'link relative',
+          route.path === '/chats' ? 'bg-green-300' : '',
+        ]"
+        ><Icon icon="mdi-chat-outline" /><span>Chat</span>
+        <small v-if="notifications.totalCount > 0" class="badge">{{
+          notifications.totalCount
+        }}</small>
+      </RouterLink>
       <RouterLink
         to="/jobs"
         :class="[
@@ -138,12 +156,29 @@
 <script setup>
 import { RouterLink, useRoute, useRouter } from "vue-router";
 import Logo from "../assets/logo.png";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watchEffect } from "vue";
 import { Icon } from "@iconify/vue/dist/iconify.js";
 import { useGetUser, useLogout } from "../lib/appWrite/query/profileQuery";
+import { useGetNotifications } from "../lib/appWrite/query/messageQuery";
+import { client } from "../lib/appWrite/config";
+import { channel } from "../lib/constant";
 
 const { mutate, isSuccess, isPending } = useLogout();
 const { data } = useGetUser();
+const userId = ref(null);
+
+const { data: notifications, refetch } = useGetNotifications(userId);
+
+watchEffect(async () => {
+  if (data.value?.$id != userId.value) {
+    userId.value = data.value.$id;
+    await refetch();
+  }
+  client.subscribe(channel, async () => {
+    await refetch();
+  });
+});
+
 const route = useRoute();
 const router = useRouter();
 const isActive = ref(false);

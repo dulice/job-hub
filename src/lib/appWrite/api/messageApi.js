@@ -22,20 +22,73 @@ export const getMessage = async (conversationId) => {
 };
 
 export const getChats = async (userId) => {
-  const message = await database.listDocuments(
+  try {
+    const message = await database.listDocuments(
+      databaseId,
+      messageCollectionId,
+      [
+        Query.or([
+          Query.equal("senderId", userId),
+          Query.equal("receivedId", userId),
+        ]),
+      ]
+    );
+    const distinctItems = [
+      ...new Map(
+        message.documents.map((item) => [item.conversationId, item])
+      ).values(),
+    ];
+    return distinctItems;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+export const getNotifications = async (userId) => {
+  try {
+    const messages = await database.listDocuments(
+      databaseId,
+      messageCollectionId,
+      [
+        Query.and([
+          Query.equal("receivedId", userId),
+          Query.equal("isRead", false),
+        ]),
+      ]
+    );
+    const messageCount = messages.documents?.reduce((acc, msg) => {
+      const conv = msg.conversationId;
+      if (!acc[conv]) {
+        acc[conv] = [];
+      }
+      acc[conv].push(msg);
+      return acc;
+    }, {});
+    return { messageCount, totalCount: messages.total };
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+export const readMessages = async (conversationId, senderId) => {
+  const messages = await database.listDocuments(
     databaseId,
     messageCollectionId,
     [
-      Query.or([
-        Query.equal("senderId", userId),
-        Query.equal("receivedId", userId),
+      Query.and([
+        Query.equal("senderId", senderId),
+        Query.equal("conversationId", conversationId),
+        Query.equal("isRead", false),
       ]),
     ]
   );
-  const distinctItems = [
-    ...new Map(
-      message.documents.map((item) => [item.conversationId, item])
-    ).values(),
-  ];
-  return distinctItems;
+  const updateMessages = messages.documents.map(
+    async (msg) =>
+      await database.updateDocument(databaseId, messageCollectionId, msg.$id, {
+        isRead: true,
+      })
+  );
+  return updateMessages;
 };
